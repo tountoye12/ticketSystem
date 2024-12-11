@@ -1,4 +1,4 @@
-package edu.miu.ticket_system.controller;
+package edu.miu.ticket_system.entity;
 
 import jakarta.persistence.*;
 
