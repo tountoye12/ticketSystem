@@ -16,4 +16,6 @@ public interface TicketService {
     Ticket getTicketById(Integer id);
 
     List<Ticket> getTicketsByPriority(Priority priority);
+
+    void delete(Integer id);
 }

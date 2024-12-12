@@ -34,4 +34,9 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> getTicketsByPriority(Priority priority) {
         return ticketRepository.getTicketsByPriority(priority);
     }
+
+    @Override
+    public void delete(Integer id) {
+        ticketRepository.deleteById(id);
+    }
 }
