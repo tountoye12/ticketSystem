@@ -9,7 +9,7 @@ spring:
     password: "root"
     # Hibernate Properties
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
     properties:

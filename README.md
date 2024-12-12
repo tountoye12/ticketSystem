@@ -47,66 +47,64 @@ The Class Diagram highlights the different entities and their relationship.
 
 ```mermaid
 classDiagram
-
     class User {
-        - Long userId
-        - String username
-        - String email
-        + List~Ticket~ getTickets()
+        +int id
+        +String firstName
+        +String lastName
+        +String email
+        +String password
+        +String username
+        +login()
+        +logout()
     }
-
+ 
+    class Resident {
+        +String apartmentNumber
+        +raiseTicket(ticket: Ticket)
+        +viewTicket(ticketId: int)
+        +confirmIssueFixed(ticketId: int)
+    }
+    User <|-- Resident
+ 
+    class LeaseOfficeStaff {
+        +reviewTicket(ticket: Ticket)
+        +assignTicket(ticket: Ticket, staff: MaintenanceStaff)
+        +reopenTicket(ticketId: int)
+    }
+    User <|-- LeaseOfficeStaff
+ 
+    class MaintenanceStaff {
+        +List~String~ skills
+        +viewAssignedTickets()
+        +markTicketAsFixed(ticketId: int)
+    }
+    User <|-- MaintenanceStaff
+ 
+    class Administrator {
+        +addUser(user: User)
+        +removeUser(userId: int)
+        +updateUserDetails(userId: int)
+    }
+    User <|-- Administrator
+ 
     class Ticket {
-        - Long ticketId
-        - String title
-        - String description
-        - Status status
-        - User assignedUser
-        + assignToUser(User user)
-        + updateStatus(Status status)
+        +int ticketId
+        +String description
+        +String status
+        +Resident raisedBy
+        +MaintenanceStaff assignedTo
+        +DateTime raisedDate
+        +DateTime lastUpdated
+        +updateStatus(newStatus: String)
     }
-
-    class Status {
-        <<enumeration>>
-        IN_PROGRESS
-        COMPLETED
-        CANCELED
-        REOPENED
-    }
-
-    class UserService {
-        + User getUserById(Long id)
-        + List~User~ getAllUsers()
-        + void createUser(User user)
-    }
-
-    class TicketService {
-        + Ticket getTicketById(Long id)
-        + List~Ticket~ getAllTickets()
-        + void createTicket(Ticket ticket)
-        + void assignTicket(Long ticketId, Long userId)
-        + void updateTicketStatus(Long ticketId, Status status)
-    }
-
-    class UserDAO {
-        + User findById(Long id)
-        + List~User~ findAll()
-        + void save(User user)
-    }
-
-    class TicketDAO {
-        + Ticket findById(Long id)
-        + List~Ticket~ findAll()
-        + void save(Ticket ticket)
-    }
-
-    User "1" --o "*" Ticket
-    Ticket "1" --> "1" Status
-    UserService --> User
-    UserService --> UserDAO
-    TicketService --> Ticket
-    TicketService --> TicketDAO
-  
-
+ 
+    Resident "1" -- "*" Ticket : raises
+    LeaseOfficeStaff "1" -- "*" Ticket : manages
+    MaintenanceStaff "1" -- "*" Ticket : handles
+    Ticket "*" -- "1" Resident : raisedBy
+    Ticket "*" -- "1" MaintenanceStaff : assignedTo
+    LeaseOfficeStaff "1" -- "*" Resident : interactsWith
+    Administrator "1" -- "*" User : manages
 ```
 
 ---
