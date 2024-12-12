@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class MaintenanceStaff extends User{
 
     private Specialization specialization;

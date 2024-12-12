@@ -10,4 +10,9 @@ import java.util.List;
 public interface ResidentService {
 
     List<Resident> findResidentByLastname();
+    List<Resident> getAllResidents();
+    Resident getResidentById(Integer id);
+    Resident saveResident(Resident resident);
+    Resident updateResident(Integer id, Resident updatedResident);
+    void deleteResident(Integer id);
 }
