@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public  abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer Id;
