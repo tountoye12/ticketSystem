@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,16 @@ public class MaintenanceStaffController {
 
     @PostMapping
     public ResponseEntity<MaintenanceStaff> createMaintenanceStaff(@RequestBody MaintenanceStaff maintenanceStaff) {
+        maintenanceStaff.setCreatedAt(LocalDateTime.now());
+        maintenanceStaff.setUpdatedAt(LocalDateTime.now());
         MaintenanceStaff savedStaff = maintenanceStaffService.saveMaintenanceStaff(maintenanceStaff);
         return ResponseEntity.ok(savedStaff);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MaintenanceStaff> updateMaintenanceStaff(@PathVariable Integer id, @RequestBody MaintenanceStaff updatedStaff) {
+    public ResponseEntity<MaintenanceStaff> updateMaintenanceStaff(@PathVariable Integer id,
+                                                                   @RequestBody MaintenanceStaff updatedStaff) {
+        updatedStaff.setUpdatedAt(LocalDateTime.now());
         MaintenanceStaff staff = maintenanceStaffService.updateMaintenanceStaff(id, updatedStaff);
         return ResponseEntity.ok(staff);
     }
