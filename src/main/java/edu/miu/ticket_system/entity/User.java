@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
-public  abstract class User {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer Id;
@@ -23,6 +23,7 @@ public  abstract class User {
     private String email;
     private String password;
     private String contactNumber;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
