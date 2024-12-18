@@ -3,14 +3,13 @@ package edu.miu.ticket_system.controller;
 import edu.miu.ticket_system.entity.User;
 import edu.miu.ticket_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -18,6 +17,18 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUser(){
-        return null;
+        return userService.getAllUsers();
+    }
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user){
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id){
+        userService.delete(id);
+        return ResponseEntity.ok("User deleted successfully");
     }
 }

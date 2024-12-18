@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer id) {
-        return userRepository.findUserById(id);
+        return userRepository.findById(id).isPresent() ? userRepository.findById(id).get() : null;
     }
 
     @Override
     public List<User> getUsersByType(UserType userType) {
-        return userRepository.findUsersByUserType(userType);
+        return userRepository.findByUserType(userType);
     }
 
     @Override
