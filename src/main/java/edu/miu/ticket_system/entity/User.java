@@ -2,7 +2,7 @@ package edu.miu.ticket_system.entity;
 
 import edu.miu.ticket_system.enums.UserType;
 import jakarta.persistence.*;
-import lombok.*;
+
 
 import java.time.LocalDateTime;
 
