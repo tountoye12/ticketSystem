@@ -1,8 +1,26 @@
-spring:
-  application:
-    name: ticket-system
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driverClassName: org.h2.Driver
+#    username: sa
+#    password:
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      ddl-auto: create-drop
+#  h2:
+#    console:
+#      enabled: true
+#  devtools:
+#    livereload:
+#      enabled: true
+#    restart:
+#      enabled: true
+
+
 
     # Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ticketdatabase
     username: root

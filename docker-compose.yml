@@ -1,0 +1,21 @@
+version: "1"
+services:
+  spring-boot-app:
+    # container_name: spring-app
+    #    image: spring-boot-app
+    restart: always
+    build: .
+    ports:
+      - 8000-8999:8080
+    env_file: .env
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      -  /home/user/Desktop/db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: employeedb
+      MYSQL_ROOT_PASSWORD: root
