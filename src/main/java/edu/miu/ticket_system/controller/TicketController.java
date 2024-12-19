@@ -1,6 +1,7 @@
 package edu.miu.ticket_system.controller;
 
 import edu.miu.ticket_system.entity.Ticket;
+import edu.miu.ticket_system.enums.TicketStatus;
 import edu.miu.ticket_system.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,13 @@ public class TicketController {
     public ResponseEntity<String> deleteTicket(@PathVariable Integer id){
         ticketService.delete(id);
         return ResponseEntity.ok("Ticket deleted successfully");
-
     }
+
+    @GetMapping("/{ticketStatus}")
+    public ResponseEntity<Ticket> getTicket(@PathVariable TicketStatus ticketStatus){
+        List<Ticket> tickets = ticketService.getTicketsByStatus(ticketStatus);
+        return (ResponseEntity<Ticket>) tickets;
+    }
+
 
 }

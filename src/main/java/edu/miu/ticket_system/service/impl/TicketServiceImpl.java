@@ -2,12 +2,13 @@ package edu.miu.ticket_system.service.impl;
 
 import edu.miu.ticket_system.entity.Ticket;
 import edu.miu.ticket_system.enums.Priority;
+import edu.miu.ticket_system.enums.TicketStatus;
 import edu.miu.ticket_system.repository.TicketRepository;
 import edu.miu.ticket_system.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +23,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket saveTicket(Ticket ticket) {
+        ticket.setTicketStatus(TicketStatus.OPEN);
+        ticket.setCreatedAt(LocalDateTime.now());
         return ticketRepository.save(ticket);
     }
 
@@ -38,5 +41,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void delete(Integer id) {
         ticketRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Ticket> getTicketsByStatus(TicketStatus ticketStatus) {
+        return ticketRepository.getTicketsByTicketStatus(ticketStatus);
     }
 }

@@ -2,6 +2,7 @@ package edu.miu.ticket_system.service;
 
 import edu.miu.ticket_system.entity.Ticket;
 import edu.miu.ticket_system.enums.Priority;
+import edu.miu.ticket_system.enums.TicketStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +19,6 @@ public interface TicketService {
     List<Ticket> getTicketsByPriority(Priority priority);
 
     void delete(Integer id);
+
+    List<Ticket> getTicketsByStatus(TicketStatus ticketStatus);
 }

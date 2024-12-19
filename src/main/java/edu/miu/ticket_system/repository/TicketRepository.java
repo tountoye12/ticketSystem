@@ -2,6 +2,7 @@ package edu.miu.ticket_system.repository;
 
 import edu.miu.ticket_system.entity.Ticket;
 import edu.miu.ticket_system.enums.Priority;
+import edu.miu.ticket_system.enums.TicketStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     Ticket getTicketById(Integer id);
 
     List<Ticket> getTicketsByPriority(Priority priority);
+
+    List<Ticket> getTicketsByTicketStatus(TicketStatus ticketStatus);
 }
