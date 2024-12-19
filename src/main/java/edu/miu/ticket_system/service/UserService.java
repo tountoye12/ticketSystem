@@ -4,9 +4,11 @@ import edu.miu.ticket_system.entity.Ticket;
 import edu.miu.ticket_system.entity.User;
 import edu.miu.ticket_system.enums.Priority;
 import edu.miu.ticket_system.enums.UserType;
+import edu.miu.ticket_system.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -14,7 +16,7 @@ public interface UserService {
 
     User saveUser(User user);
 
-    User getUserById(Integer id);
+    Optional<User> getUserById(Integer id) throws UserNotFoundException;
 
     List<User> getUsersByType(UserType userType);
 
