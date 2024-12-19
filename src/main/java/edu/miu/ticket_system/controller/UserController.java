@@ -32,4 +32,9 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer id){
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
 }

@@ -23,7 +23,7 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ticketdatabase
-    username: root
+    username: "root"
     password: "root"
     # Hibernate Properties
   jpa:
