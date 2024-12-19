@@ -6,6 +6,7 @@ import edu.miu.ticket_system.service.ResidentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class ResidentServiceImpl implements ResidentService {
 
     @Override
     public Resident saveResident(Resident resident) {
+        resident.setCreatedAt(LocalDateTime.now());
         return residentRepository.save(resident);
     }
 

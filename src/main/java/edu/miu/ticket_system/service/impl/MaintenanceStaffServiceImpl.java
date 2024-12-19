@@ -6,6 +6,7 @@ import edu.miu.ticket_system.service.MaintenanceStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +28,7 @@ public class MaintenanceStaffServiceImpl implements MaintenanceStaffService {
 
     @Override
     public MaintenanceStaff saveMaintenanceStaff(MaintenanceStaff maintenanceStaff) {
+        maintenanceStaff.setCreatedAt(LocalDateTime.now());
         return maintenanceStaffRepository.save(maintenanceStaff);
     }
 
