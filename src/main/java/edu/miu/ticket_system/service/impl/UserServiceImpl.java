@@ -3,12 +3,14 @@ package edu.miu.ticket_system.service.impl;
 
 import edu.miu.ticket_system.entity.User;
 import edu.miu.ticket_system.enums.UserType;
+import edu.miu.ticket_system.exception.UserNotFoundException;
 import edu.miu.ticket_system.repository.UserRepository;
 import edu.miu.ticket_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,8 +29,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Integer id) {
-        return userRepository.findById(id).isPresent() ? userRepository.findById(id).get() : null;
+    public Optional<User> getUserById(Integer id) throws UserNotFoundException {
+        return Optional.ofNullable(userRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new UserNotFoundException("No user with id:  + id")
+                ));
     }
 
     @Override

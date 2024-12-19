@@ -1,12 +1,15 @@
 package edu.miu.ticket_system.controller;
 
 import edu.miu.ticket_system.entity.User;
+import edu.miu.ticket_system.exception.UserNotFoundException;
 import edu.miu.ticket_system.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -21,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody @Valid User user){
         System.out.println(user);
         User savedUser = userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
@@ -34,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id){
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable Integer id) throws UserNotFoundException {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 }
