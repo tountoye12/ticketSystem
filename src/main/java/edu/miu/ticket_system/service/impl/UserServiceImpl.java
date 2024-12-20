@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByType(UserType userType) {
-        return userRepository.findByUserType(userType);
+        return null;
     }
 
     @Override

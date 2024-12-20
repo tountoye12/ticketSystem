@@ -52,6 +52,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -101,6 +108,10 @@
 			<artifactId>quarkus-smallrye-jwt-build</artifactId>
 			<version>3.13.0.CR1</version>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -136,19 +147,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<finalName>ticket-system.0.0.1</finalName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
-						</path>
-					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 

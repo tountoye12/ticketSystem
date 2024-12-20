@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
