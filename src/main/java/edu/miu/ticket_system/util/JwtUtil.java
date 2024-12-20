@@ -1,18 +1,17 @@
 package edu.miu.ticket_system.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.Mac;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -38,11 +37,9 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(signingKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        String[] parts = token.split("\\.");
+        String payload = new String(Base64.getDecoder().decode(parts[1]));
+        return new Claims(payload);
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -52,13 +49,31 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000L))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
-                .compact();
+        long currentTimeMillis = System.currentTimeMillis();
+        Date issuedAt = new Date(currentTimeMillis);
+        Date expiration = new Date(currentTimeMillis + tokenValidity * 1000L);
+
+        Map<String, Object> header = new HashMap<>();
+        header.put("alg", SignatureAlgorithm.HS256.getValue());
+        header.put("typ", "JWT");
+
+        String encodedHeader = Base64.getUrlEncoder().encodeToString(header.toString().getBytes());
+        String encodedPayload = Base64.getUrlEncoder().encodeToString(claims.toString().getBytes());
+        String signature = createSignature(encodedHeader, encodedPayload);
+
+        return encodedHeader + "." + encodedPayload + "." + signature;
+    }
+
+    private String createSignature(String encodedHeader, String encodedPayload) {
+        String data = encodedHeader + "." + encodedPayload;
+        try {
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(signingKey);
+            byte[] bytes = mac.doFinal(data.getBytes());
+            return Base64.getUrlEncoder().encodeToString(bytes);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating JWT signature", e);
+        }
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -71,11 +86,23 @@ public class JwtUtil {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        Claims claims = extractAllClaims(token);
+        return claims.getExpiration();
     }
 
-    public List<SimpleGrantedAuthority> extractRoles(String token) {
-        Claims claims = extractAllClaims(token);
-        return (List<SimpleGrantedAuthority>) claims.get("roles");
+    // Custom Claims class to handle payload extraction (for simplicity)
+    private static class Claims {
+        @Getter
+        private String subject;
+        @Getter
+        private Date expiration;
+        private Map<String, Object> claims;
+
+        public Claims(String payload) {
+            this.claims = new HashMap<>();
+            this.claims.put("subject", payload);
+            this.expiration = new Date(System.currentTimeMillis() + 3600 * 1000L);
+        }
+
     }
 }

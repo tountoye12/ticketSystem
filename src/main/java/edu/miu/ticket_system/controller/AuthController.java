@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -54,29 +57,33 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
+        Map<String, String> response = new HashMap<>();
+
         try {
-            // Log incoming request
-            System.out.println("Attempting to authenticate user: " + user.getUsername());
 
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
             );
             System.out.println("Authentication successful for user: " + user.getUsername());
 
-            // Load user details and generate token
             UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
             String jwtToken = jwtUtil.generateToken(userDetails);
 
             System.out.println("Generated JWT token for user: " + user.getUsername());
-            return ResponseEntity.ok(jwtToken);
+
+            response.put("token", jwtToken);
+            response.put("status code", String.valueOf(HttpStatus.OK.value()));
+
+            return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
-            // Log exception
-            System.err.println("Authentication failed for user: " + user.getUsername());
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+            response.put("token", "");
+            response.put("status code", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+
     }
-
-
 }
