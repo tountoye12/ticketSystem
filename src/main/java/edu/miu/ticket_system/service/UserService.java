@@ -22,4 +22,6 @@ public interface UserService {
     List<User> getUsersByType(UserType userType);
 
     void delete(Integer id);
+
+    User getUserByUserName(String username);
 }

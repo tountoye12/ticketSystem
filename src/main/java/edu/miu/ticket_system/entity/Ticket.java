@@ -1,13 +1,13 @@
 package edu.miu.ticket_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import edu.miu.ticket_system.entity.Resident;
 import edu.miu.ticket_system.enums.Priority;
 import edu.miu.ticket_system.enums.TicketStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 import java.time.LocalDateTime;
 
@@ -32,8 +32,9 @@ public class Ticket {
     private String resolutionDetails;
     private LocalDateTime completedAt;
     private LocalDateTime approvedAt;
+
     @ManyToOne
-    @JsonIgnore
+    @JsonManagedReference // Add this to handle the relationship
     private Resident resident;
 
     public Ticket(String apartmentNumber, String title, String description, LocalDateTime createdAt, LocalDateTime updatedAt, Priority priority) {

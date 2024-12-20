@@ -4,8 +4,10 @@ import edu.miu.ticket_system.entity.LeaseOfficeStaff;
 import edu.miu.ticket_system.entity.MaintenanceStaff;
 import edu.miu.ticket_system.entity.Resident;
 import edu.miu.ticket_system.entity.User;
+import edu.miu.ticket_system.repository.UserRepository;
 import edu.miu.ticket_system.service.impl.UserService;
 import edu.miu.ticket_system.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +29,8 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil,
                    PasswordEncoder passwordEncoder) {
@@ -74,6 +78,13 @@ public class AuthController {
 
             response.put("token", jwtToken);
             response.put("status code", String.valueOf(HttpStatus.OK.value()));
+            User tempUser = userRepository.findByUserName(user.getUsername()).get();
+            response.put("firstName", tempUser.getFirstName());
+            response.put("lastName", tempUser.getLastName());
+            response.put("email", tempUser.getEmail());
+            response.put("userRole", tempUser.getUserType().toString());
+            response.put("id", tempUser.getId().toString());
+
 
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
