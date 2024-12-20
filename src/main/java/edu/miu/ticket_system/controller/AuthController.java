@@ -61,29 +61,30 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
 
         try {
-
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
             );
             System.out.println("Authentication successful for user: " + user.getUsername());
-
             UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
+
             String jwtToken = jwtUtil.generateToken(userDetails);
+            String role = userDetails.getAuthorities().toString();
 
             System.out.println("Generated JWT token for user: " + user.getUsername());
+            System.out.println("User role: " + role);
 
             response.put("token", jwtToken);
+            response.put("role", role);
             response.put("status code", String.valueOf(HttpStatus.OK.value()));
 
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
-
             response.put("token", "");
+            response.put("role", "");
             response.put("status code", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-
-
     }
+
 }
