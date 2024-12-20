@@ -1,6 +1,7 @@
 package edu.miu.ticket_system.entity;
 
 import edu.miu.ticket_system.enums.Specialization;
+import edu.miu.ticket_system.enums.UserType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;

@@ -1,12 +1,10 @@
 package edu.miu.ticket_system.repository;
 
 import edu.miu.ticket_system.entity.User;
-import edu.miu.ticket_system.enums.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    List<User> findByUserType(UserType userType);
+    Optional<User> findByUserName(String username);
 }

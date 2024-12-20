@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Resident extends User{
     private String apartmentNumber;
     private LocalDate leaseStartDate;
