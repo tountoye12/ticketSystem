@@ -1,21 +1,41 @@
-version: "1"
+version: '3.8'
 services:
-  spring-boot-app:
-    # container_name: spring-app
-    #    image: spring-boot-app
-    restart: always
-    build: .
-    ports:
-      - 8000-8999:8080
-    env_file: .env
-
-  mysqldb:
-    container_name: mysqldb
-    image: mysql
-    volumes:
-      -  /home/user/Desktop/db:/var/lib/mysql
-    ports:
-      - 3307:3306
+  mysql-container:
+    image: mysql:latest
+    container_name: mysql-container
     environment:
-      MYSQL_DATABASE: employeedb
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ticketdatabase
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-app
+#    volumes:
+#      - ./target/ticket-system-0.0.1.jar:/app/ticket-system-0.0.1.jar
+    environment:
+      DATABASE_URL: jdbc:mysql://mysql-container:3306/ticketdatabase
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
