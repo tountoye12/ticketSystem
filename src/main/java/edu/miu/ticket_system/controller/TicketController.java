@@ -40,6 +40,17 @@ public class TicketController {
         return (ResponseEntity<Ticket>) tickets;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Integer id, @RequestBody Ticket ticket) {
+        Ticket existingTicket = ticketService.getTicketById(id);
+        if (existingTicket != null) {
+            ticket.setId(id); // Ensure the ticket has the correct ID
+            Ticket updatedTicket = ticketService.saveTicket(ticket);
+            return ResponseEntity.ok(updatedTicket);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

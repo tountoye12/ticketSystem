@@ -1,5 +1,5 @@
 # Use OpenJDK 17 Alpine as the base image
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk
 
 # Set the maintainer information
 MAINTAINER group
