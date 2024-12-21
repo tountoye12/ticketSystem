@@ -34,7 +34,6 @@ public class Ticket {
     private LocalDateTime approvedAt;
 
     @ManyToOne
-    @JsonManagedReference // Add this to handle the relationship
     private Resident resident;
 
     public Ticket(String apartmentNumber, String title, String description, LocalDateTime createdAt, LocalDateTime updatedAt, Priority priority) {
